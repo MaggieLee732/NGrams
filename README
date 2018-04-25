@@ -1,0 +1,13 @@
+README
+STOCHASTIC LANGUAGE MODELING: N-GRAMS
+
+This program takes in a number of sentences from the user and then calculates the probability the a test sentence being produced.
+
+1. The user is prompted for the type of N-gram to use; either unigram (1), bigram (2), or trigram (3)
+2. The user is prompted for the number of sentence they will be inputting into the corpus
+3. The user will enter each sentence indivually the number of times previously established
+4. Finally, the user will enter the sentence to be tested 
+
+The program goes word by word of the test sentence and iterates through the corpus. A count (seenCount) keep track of the number of times the word in the test sentence appears (changes based off N-gram).
+Another count (nCount) keeps track of how many times the word as well as n-1 previous words match in the appropriate order.
+The percentage is calculated by dividing the nCount by the seenCount for each word and then multiplying the decimals. 

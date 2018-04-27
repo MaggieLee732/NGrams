@@ -89,10 +89,10 @@ nCount = zeros(1,strLength); % holds count of times the n amount of words are in
 seenCount = zeros(1,strLength); %holds count of word being tested
 
 % LOOP THROUGH ENTIRE CORPUS
-for i=nNum:strLength        % loops though each word in test sentence
-    for j=1:num             % loops through each sentence in corpus
-        for k=1:col         % loops through each word in corpus
-            if nNum == 2       % if nNum is 2, look at 1 word previously
+for i=nNum:strLength
+    for j=1:num
+        for k=1:col
+            if nNum == 2               
                 if strcmp(strTest(1,i-1),corpus(j,k))
                     seenCount(1,i) = seenCount(1,i) + 1;
                     if strcmp(strTest(1,i),corpus(j,k+1))
@@ -100,7 +100,7 @@ for i=nNum:strLength        % loops though each word in test sentence
                     end
                 end
             end
-            if nNum == 3        % if nNum is 3, look at 2 words previously
+            if nNum == 3
                  if strcmp(strTest(1,i-2),corpus(j,k))
                     if strcmp(strTest(1,i-1),corpus(j,k+1))
                         seenCount(1,i) = seenCount(1,i) + 1;
@@ -109,8 +109,9 @@ for i=nNum:strLength        % loops though each word in test sentence
                         end
                     end
                  end
-            else                % nNum is 1, check for any matches
-                if strcmp(strTest(1,i),corpus(j,k)) 
+            end
+            if nNum == 1
+                if strcmp(strTest(1,i),corpus(j,k))
                     seenCount(1,i) = seenCount(1,i) + 1;
                     nCount(1,i) = nCount(1,i) + 1;
                 end

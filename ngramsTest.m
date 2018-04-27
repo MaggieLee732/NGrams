@@ -1,6 +1,6 @@
 % STOCHASTIC LANGUAGE MODELING USING N-GRAMS
 % Important variables used
-% nNum = which n-gram to use- either none, bigram, or trigram
+% nNum = which n-gram to use- either unigram, bigram, or trigram
 % num = number of sentences the user inputs to test the test string against
 % nCount = number of times the word being tested is in the correct sequence
 % seenCount = number of times the word being tested has been counted
@@ -52,9 +52,9 @@ for i=1:num
             corpus{i,numOfShifts} = corpus{i,numOfShifts-1};
             numOfShifts = numOfShifts - 1;
         end
-        corpus{i,s} = '0';
+        corpus{i,s} = '<s>';
     end
-    corpus{i,strLength} = '0';
+    corpus{i,strLength} = '</s>';
 end
 disp(corpus);
 [row,col] = size(corpus);
@@ -80,39 +80,46 @@ for s=1:nNum-1                    % Shifts sentence over depending on nNum
         strTest{1,numOfShifts} = strTest{1,numOfShifts-1};
         numOfShifts = numOfShifts - 1;
     end
-    strTest{1,s} = '0';
+    strTest{1,s} = '<s>';
 end
-strTest{1,strLength} = '0';
+strTest{1,strLength} = '</s>';
 disp(strTest);
 
 nCount = zeros(1,strLength); % holds count of times the n amount of words are in order
 seenCount = zeros(1,strLength); %holds count of word being tested
 
 % LOOP THROUGH ENTIRE CORPUS
-for i=nNum:strLength             % Loop for words in strTest, start at 2 because already checked first word
-    for j=1:num                 % Loop for number of sentences 
-        for y=nNum:col             % Loop for number of words in each sentence
-            if strcmp(strTest(1,i), corpus(j,y))    % Test if a single word matches
-                if nNum == 1
+for i=nNum:strLength        % loops though each word in test sentence
+    for j=1:num             % loops through each sentence in corpus
+        for k=1:col         % loops through each word in corpus
+            if nNum == 2       % if nNum is 2, look at 1 word previously
+                if strcmp(strTest(1,i-1),corpus(j,k))
+                    seenCount(1,i) = seenCount(1,i) + 1;
+                    if strcmp(strTest(1,i),corpus(j,k+1))
+                        nCount(1,i) = nCount(1,i) + 1;
+                    end
+                end
+            end
+            if nNum == 3        % if nNum is 3, look at 2 words previously
+                 if strcmp(strTest(1,i-2),corpus(j,k))
+                    if strcmp(strTest(1,i-1),corpus(j,k+1))
+                        seenCount(1,i) = seenCount(1,i) + 1;
+                        if strcmp(strTest(1,i),corpus(j,k+2))
+                            nCount(1,i) = nCount(1,i) + 1;
+                        end
+                    end
+                 end
+            else                % nNum is 1, check for any matches
+                if strcmp(strTest(1,i),corpus(j,k)) 
                     seenCount(1,i) = seenCount(1,i) + 1;
                     nCount(1,i) = nCount(1,i) + 1;
-                end
-                if nNum == 2            % If the type is 2, then add 1 to seenCount and test previous word
-                    seenCount(1,i) = seenCount(1,i) + 1;
-                    if strcmp(strTest(1,i-1), corpus(j,y-1)) % If Previous word matches, add 1 to nCount;
-                        nCount(1,i) = nCount(1,i) + 1;
-                    end
-                end
-                if nNum == 3 && (strcmp(strTest(1,i-1), corpus(j,y-1))) % Test if type is 3 and if previous word matches                
-                    seenCount(1,i) = seenCount(1,i) + 1;
-                    if strcmp(strTest(1,i-2), corpus(j,y-2))
-                        nCount(1,i) = nCount(1,i) + 1;
-                    end
                 end
             end
         end
     end
 end
+
+
 disp("n: " + nCount);
 disp("s: " + seenCount);
 for i=nNum:strLength            % Divide nGram count with times seen
@@ -124,4 +131,4 @@ probability = 1;
 for i=nNum:strLength            % Multiplies probbility of each word to get total probability
     probability = probability * nCount(1,i);
 end
-disp("The probability of the sentence occuring is: " + probability);
+disp("The probability of the sentence occurring is: " + probability);

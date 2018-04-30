@@ -133,3 +133,4 @@ for i=nNum:strLength            % Multiplies probbility of each word to get tota
     probability = probability * nCount(1,i);
 end
 disp("The probability of the sentence occurring is: " + probability);
+bar(nCount);

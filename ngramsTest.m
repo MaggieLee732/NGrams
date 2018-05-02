@@ -120,9 +120,9 @@ for i=nNum:strLength
     end
 end
 
-
-disp("n: " + nCount);
-disp("s: " + seenCount);
+disp(strTest(nNum:end));
+disp("n: " + nCount(nNum:end));
+disp("s: " + seenCount(nNum:end));
 for i=nNum:strLength            % Divide nGram count with times seen
     if nCount(1,i) ~= 0
         nCount(1,i) = nCount(1,i) / seenCount(1,i);
@@ -133,4 +133,4 @@ for i=nNum:strLength            % Multiplies probbility of each word to get tota
     probability = probability * nCount(1,i);
 end
 disp("The probability of the sentence occurring is: " + probability);
-bar(nCount);
+bar(nCount(nNum:end));
